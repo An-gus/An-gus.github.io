@@ -1,0 +1,273 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family:"Comic Sans MS", sans-serif;
+}
+canvas {
+  display: block;
+}
+
+#main{
+  display: flex;
+  align-items: stretch;
+}
+
+#sideBar{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  background-color: #AABBCC;
+  max-height: 100vh;
+  text-align: center;
+}
+
+#gates, #inputs, #outputs{
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+}
+
+.comp{
+  padding: 10px 5px;
+}
+
+#IO, #settings{
+  display: none;
+  width:90vw;
+  height: 90vh;
+  position: absolute;
+  left: 5vw;
+  top: 5vh;
+  z-index: -1;
+  background: rgb(26, 26, 26);
+  border-radius: 25px;
+  min-height: 420px;
+  min-width: 560px;
+}
+
+#IO > div{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  text-align: center;
+}
+
+#IO h1{
+  color: #666;
+}
+
+#IO {
+  color: #CCC
+}
+
+#settings > div{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-align: center;
+  justify-content: space-around;
+}
+
+#settings h1{
+  color: #666;
+  margin-top: 0;
+}
+
+#settings {
+  color: #CCC
+}
+
+.menuHalf{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-around;
+  margin: 0 auto;
+}
+
+.menuHalf > div {
+  margin: auto;
+}
+
+.inpLable{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.userIn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#colCont{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.colLabel{
+  margin: 0 auto;
+}
+
+#outputTruthTable{
+  display: none;
+  width: 100%;
+}
+
+#inputTruthTable{
+  display: none;
+  width: 100%;
+}
+
+#outputTruthTable > table{
+  margin: 10px auto 0 auto;
+}
+
+#inputTruthTable > table{
+  margin: 10px auto 0 auto;
+}
+
+table, th, td {
+  border: 1px solid #CCC;
+  border-collapse: collapse;
+}
+
+#ttIn, #ttOut{
+  max-width: 40vw;
+  overflow-x: auto;
+}
+
+
+#boolOut, #boolIn{
+  padding-bottom: 10px;
+}
+
+select{
+  text-align-last: center;
+}
+
+#clearSandbox{
+  z-index: 1;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+@keyframes twist {
+  0%   {transform: rotate(0deg);}
+  25%  {transform: rotate(-30deg);}
+  50%  {transform: rotate(0deg);}
+  75%  {transform: rotate(30deg);}
+  100% {transform: rotate(0deg);}
+}
+
+.menuButton{
+  width:35px;
+  height: 35px;
+  transform: scale(0.9);
+}
+  
+.menuButton:hover{
+  /*animation: twist .5s;*/
+  transform: scale(1);
+}
+
+.comp{
+  transform: scale(0.9);
+}
+.comp:hover{
+  transform: scale(1);
+}
+
+ul{
+  list-style-position: inside;
+  padding: 0%;
+}
+
+/*Tooltip code altered from W3Schools*/
+.ttip {
+  position: relative;
+  display: inline-block;
+}
+.ttip .ttipText {
+  visibility: hidden;
+  width: 200px;
+  top: 150%;
+  left: 50%;
+  margin-left: -100px;
+  background-color: rgb(114, 114, 114);
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+.ttip .ttipText::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(114, 114, 114) transparent;
+}
+.ttip:hover .ttipText {
+  visibility: visible;
+}
+
+.ttipText>ul{
+  padding-left: 10%;
+  font-size: 10px;
+  text-align: left;
+}
+
+/*align text in input boxes to the center*/
+input {
+  text-align: center;
+}
+::-webkit-input-placeholder {
+  text-align: center;
+}
+:-moz-placeholder {
+  text-align: center;
+}
+
+
+/*Custom Scroll Bar*/
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input[type=number]{
+  width: 1em;
+}
+
+/*hide buttons on  numerical inputs*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head>
+    <title>Logic Simulation</title>
+    <!--Including the required libraries-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js" async=true></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js" async=true></script> -->
+    <script src="js/libraries/jsep.min.js" async=true></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" type="image/ico" href="images/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="An online logic gate simulation. Allowing users to create, edit, and run their own logic circuits with the ability to import and export truth tables as well as boolean algebra">
+
+  </head>
+  <body>
+    <!--Load the scripts-->
+    <script src="js/main.js"></script>
+    <script src="js/draggable.js"></script>
+    <script src="js/gate.js"></script>
+    <script src="js/output.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/circuit.js"></script>
+    <script src="js/clock.js"></script>
+
+    <img alt="data IO button" class="menuButton" id="ioButton" src="/images/buttons/IO.png" onclick="if(menu==null){openMenu('IO')}else if(menu!='IO'){closeMenu(menu); openMenu('IO')}else{closeMenu('IO')}">
+    <img alt="settings button" class="menuButton" id="settingsButton" onclick="if(menu==null){openMenu('settings')}else if(menu!='settings'){closeMenu(menu); openMenu('settings')}else{closeMenu('settings')}" src="/images/buttons/settings.png">
+    <img alt="clear sandbox" class="menuButton" id="clearSandbox" onclick="circuit = new Circuit()" src="/images/buttons/clear.png">
+    <!--The sidebar and canvas-->
+    <div id="main">
+      
+      <!--the sidebar containing the components-->
+      <div id="sideBar">
+        
+        <!--Gates-->
+        <div id="gates">
+          <img alt="and gate" class="comp" id="AND" onclick="clickGate('AND')" src="/images/gates/AND.png"></img>
+          <img alt="or gate"class="comp" id="OR" onclick="clickGate('OR')" src="/images/gates/OR.png"></img>
+          <img alt="xor gate"class="comp" id="XOR" onclick="clickGate('XOR')" src="/images/gates/XOR.png"></img>
+          <img alt="nand gate"class="comp" id="NAND" onclick="clickGate('NAND')" src="/images/gates/NAND.png"></img>
+          <img alt="nor gate"class="comp" id="NOR" onclick="clickGate('NOR')" src="/images/gates/NOR.png"></img>
+          <img alt="xnor gate"class="comp" id="XNOR" onclick="clickGate('XNOR')" src="/images/gates/XNOR.png"></img>
+          <img alt="not gate"class="comp" id="NOT" onclick="clickGate('NOT')" src="/images/gates/NOT.png"></img>
+        </div>
+        
+        <!--Inputs-->
+        <div id="inputs">
+          <p id="toggle" class="comp" onclick="clickInp('toggle')">Toggle</p>
+          <p id="push" class="comp" onclick="clickInp('push')">Push</p>
+          <img alt="clock button" id="clock" class="comp" onclick="clickClock()" src="/images/clock.svg">
+        </div>
+        
+        <!--Outputs-->
+        <div id="outputs">
+          <p id="output" class="comp" onclick="clickOut()">Output</p>
+        </div>
+        
+      </div>
+      
+      <!--the sandbox containing the simulation-->
+      <div id="canv" oncontextmenu="return false"></div>
+
+      <!--the IO menu-->
+      <div id="IO">
+        <div>
+          <div class="menuHalf">
+            <h1>Input Data</h1>
+            <div id="ttIn">
+              <h3>Import Truth Table</h3>
+              <div class="userIn">
+                <div class="inpLabel">
+                  <label for="ttInps">Inputs</label><br>
+                  <input type="number" id="ttInps">
+                </div>
+                <div class="inpLabel" style="margin-bottom: 10px;">
+                  <label for="ttOuts">Outputs</label><br>
+                  <input type="number" id="ttOuts">
+                </div>
+              </div>
+              <input type="button" value="Generate" onclick="genTT()">
+              <div id="inputTruthTable">
+                <table style="margin-bottom: 10px;">
+                  <tr>
+                    <th>Inputs</th>
+                    <th>Outputs</th>
+                  </tr>
+                </table>
+                <input type="button" value="Generate" onclick="buildTT()">
+              </div>
+            </div>
+            <div id="boolIn">
+              <h3>Import Boolean Expression</h3>
+              <div class=inpLabel>
+                <label for="boolExpIn">Expression</label><br>
+                <input type="text" id="boolExpIn" placeholder="a OR (b AND c)">
+              </div>
+              <div class="ttip">
+                <input type="button" value="Generate" onclick="genBool()">
+                <span class="ttipText"><ul>
+                  <li>Use words or symbols for gates</li>
+                  <li>Use letters for inputs</li>
+                  <li>Use "clk" prefix for clocks</li>
+                </ul></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="menuHalf">
+            <h1>Output Data</h1>
+            <div id="ttOut">
+              <h3>Export Truth Table</h3>
+              <input type="button" value="Generate" onclick="outTT()">
+              <br>
+              <div id="outputTruthTable">
+                <table>
+                  <tr>
+                    <th>Inputs</th>
+                    <th>Outputs</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id="boolOut">
+              <h3>Export Boolean Expression</h3>
+              <div class=inpLabel>
+                <label for="boolWrtOut">Written</label><br>
+                <input type="text" id="boolWrtOut" disabled=true><br>
+                <input type="button" value="Generate" onclick="outWrt()">
+              </div><br>
+              <div class=inpLabel>
+                <label for="boolExpOut">Symbolic</label><br>
+                <input type="text" id="boolExpOut" disabled=true><br>
+                <input type="button" value="Generate" onclick="outExp()">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--the settings menu-->
+      <div id="settings">
+        <div>
+          <h1>Settings</h1>
+          <div>
+            <h3>Controls:</h3>
+            <ul>
+              <li>Click mouse-one to interact</li>
+              <li>Hold mouse-one to drag-and-drop</li>
+              <li>Click mouse-two to delete</li>
+              <li>Click mouse-wheel to edit clocks</li>
+              <li>Scroll mouse-wheel to zoom</li>
+            </ul>
+            <input type="button" value="Default Settings" onclick="defaultSettings()">
+          </div>
+          <div id="boolType">
+            <h3>Boolean Algebra Type</h3>
+            <select id="boolGrams"  onchange="setBoolType()">
+              <option value="logic" >Logical</option>
+              <option value="wrt"   >Written</option>
+              <option value="mech"  >Mechanical</option>
+            </select>
+          </div>
+          <div id="colourScheme">
+            <h3>Colour Scheme</h3>
+            <div id="colCont">
+              <div class="colLabel">
+                <label for="sandBoxCol">SandBox</label><br>
+                <input type="color" id="sandBoxCol" onchange="setColour('sandBoxCol')">
+              </div>
+              <div class="colLabel">
+                <label for="sideBarCol">SideBar</label><br>
+                <input type="color" id="sideBarCol" onchange="setColour('sideBarCol')">
+              </div>
+              <div class="colLabel">
+                <label for="highCol">High</label><br>
+                <input type="color" id="highCol" onchange="setColour('highCol')">
+              </div>
+              <div class="colLabel">
+                <label for="lowCol">Low</label><br>
+                <input type="color" id="lowCol" onchange="setColour('lowCol')">
+              </div>
+              <div class="colLabel">
+                <label for="dragCol">Dragging</label><br>
+                <input type="color" id="dragCol" onchange="setColour('dragCol')">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
+     
+
+</body></html>
